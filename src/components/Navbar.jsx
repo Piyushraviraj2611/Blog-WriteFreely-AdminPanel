@@ -23,7 +23,7 @@ const Navbar = ({ showNav }) => {
             <div>
                 {/* Logo */}
                 <div className="flex items-center justify-center space-x-2 p-3 whitespace-nowrap transition-width">
-                    <img src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="logo" className="w-8 h-8" />
+                    <img src="https://res.cloudinary.com/dth8f91to/image/upload/v1693940820/fiqw7jotolsf5adliobg.jpg" alt="logo" className="w-8 h-8" />
                     <span className={showNav ? "w-full overflow-hidden" : "w-0 overflow-hidden"}>Admin Panel</span>
                 </div>
             </div>
