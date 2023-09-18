@@ -47,11 +47,11 @@ const Home = () => {
 
 	return (
 		<div>
-			<div className="posts grid grid-cols-3 gap-3 pb-5">
+			<div className="posts grid grid-cols-2 gap-3 pb-5 md:grid-cols-3">
 				{searchResult?.length > 0
 					? searchResult.map((post) => <PostCard key={post._id} post={post} onDeleteClick={() => handlePostDelete(post)} />)
 					: posts.map((post) => (
-							<div className="post" key={post._id}>
+							<div className="post rounded-lg overflow-hidden shadow-md bg-white" key={post._id}>
 								<PostCard post={post} onDeleteClick={() => handlePostDelete(post)} />
 							</div>
 					  ))}
