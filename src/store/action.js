@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-const url = 'http://localhost:4848/api/v1';
+const url = 'https://blog-writefreely-backend.onrender.com/api/v1';
 
 export const registerUser = createAsyncThunk(
 	'registerUser',
