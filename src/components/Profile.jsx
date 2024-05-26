@@ -12,7 +12,7 @@ const Profile = () => {
         // Dispatch action to clear user data
         dispatch(deleteUser());
         // Navigate to the login page
-        history.replace('/login');
+        navigate('/login');
     };
 
     if (!user) {
