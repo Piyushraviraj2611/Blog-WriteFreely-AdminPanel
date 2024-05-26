@@ -31,7 +31,7 @@ const Home = () => {
 			// if success is true
 			if (user?.role === 'admin') {
 				setPosts(posts);
-			} else setPosts(posts.filter((post) => post.userID === user._id));
+			} else setPosts(posts.filter((post) => post?.userID === user?._id));
 
 			setTotalPostCount(postsCount);
 		} else return updateNotification('error', message);
