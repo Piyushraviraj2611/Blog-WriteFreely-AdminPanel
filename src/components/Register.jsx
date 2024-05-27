@@ -10,19 +10,58 @@ const Register = () => {
         phone: '',
         password: '',
     });
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const validate = () => {
+        let formErrors = {};
+        if (!formData.fullName) {
+            formErrors.fullName = 'Full Name is required';
+        } else if (formData.fullName.length < 3) {
+            formErrors.fullName = 'Full Name must be at least 3 characters';
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email) {
+            formErrors.email = 'Email is required';
+        } else if (!emailRegex.test(formData.email)) {
+            formErrors.email = 'Invalid email address';
+        }
+
+        const phoneRegex = /^\d{10}$/;
+        if (!formData.phone) {
+            formErrors.phone = 'Phone number is required';
+        } else if (!phoneRegex.test(formData.phone)) {
+            formErrors.phone = 'Phone number must be 10 digits';
+        }
+
+        if (!formData.password) {
+            formErrors.password = 'Password is required';
+        } else if (formData.password.length < 6) {
+            formErrors.password = 'Password must be at least 6 characters';
+        }
+
+        setErrors(formErrors);
+        return Object.keys(formErrors).length === 0;
+    };
 
     const handleSubmit = async () => {
+        if (!validate()) {
+            return;
+        }
+
+        setLoading(true);
         try {
             const response = await register(formData);
             if (response.success) {
                 navigate('/profile'); // Redirect to profile page upon successful registration
             } else {
-                setError(response.message);
+                setErrors({ form: response.message });
             }
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            setErrors({ form: 'Registration failed. Please try again.' });
         }
+        setLoading(false);
     };
 
     return (
@@ -54,6 +93,7 @@ const Register = () => {
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
+                            {errors.email && <div className="text-red-500">{errors.email}</div>}
                         </div>
                     </div>
                     <div>
@@ -70,6 +110,7 @@ const Register = () => {
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                             />
+                            {errors.fullName && <div className="text-red-500">{errors.fullName}</div>}
                         </div>
                     </div>
                     <div>
@@ -80,12 +121,13 @@ const Register = () => {
                             <input
                                 id="number"
                                 name="number"
-                                type="number"
+                                type="text"
                                 autoComplete="number"
                                 required
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             />
+                            {errors.phone && <div className="text-red-500">{errors.phone}</div>}
                         </div>
                     </div>
 
@@ -105,17 +147,20 @@ const Register = () => {
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             />
+                            {errors.password && <div className="text-red-500">{errors.password}</div>}
                         </div>
                     </div>
 
-                    {error && <div className="text-red-500">{error}</div>}
+                    {errors.form && <div className="text-red-500">{errors.form}</div>}
 
                     <div>
                         <button
-                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" style={{ backgroundColor: '#ec834b' }}
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            style={{ backgroundColor: '#ec834b' }}
                             onClick={handleSubmit}
+                            disabled={loading}
                         >
-                            Sign Up
+                            {loading ? 'Signing Up...' : 'Sign Up'}
                         </button>
                     </div>
                 </div>

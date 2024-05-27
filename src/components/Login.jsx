@@ -12,10 +12,13 @@ const Login = () => {
         password: '',
     });
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handleSubmit = async () => {
+        setLoading(true);
         const response = await login(formData);
+        setLoading(false);
         if (response.success) {
             dispatch(addUser(response));
             navigate('/profile'); // Redirect to profile page upon successful login
@@ -113,19 +116,22 @@ const Login = () => {
                     <div>
                         <button
                             type="button"
-                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" style={{ backgroundColor: '#ec834b' }}
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            style={{ backgroundColor: '#ec834b' }}
                             onClick={handleSubmit}
+                            disabled={loading}
                         >
-                            Sign in
+                            {loading ? 'Signing In...' : 'Sign In'}
                         </button>
                     </div>
                 </div>
 
-                <p className="mt-10 text-center text-sm text-gray-500" >
+                <p className="mt-10 text-center text-sm text-gray-500">
                     Don't have an account?{' '}
                     <a
                         href="/register"
-                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500" style={{ color: '#ec834b' }}
+                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                        style={{ color: '#ec834b' }}
                     >
                         Sign up
                     </a>
